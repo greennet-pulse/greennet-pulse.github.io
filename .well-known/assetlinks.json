@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.greennet.greennet_pulse",
+      "sha256_cert_fingerprints": [
+        "6E:20:56:BD:8E:BE:7F:3C:AF:7C:49:23:72:74:EE:87:41:C7:D1:AE:6C:0E:E4:9E:88:27:FA:8E:37:58:4C:82"
+      ]
+    }
+  }
+]
