@@ -12,7 +12,8 @@
   h1 { font-size: 26px; margin: 0 0 4px; color: #61D91F; }
   .code { font-size: 20px; font-weight: 700; direction: ltr; margin: 8px 0 22px; color: #9AA8B2; }
   a.btn { display: block; padding: 16px; border-radius: 14px; background: #61D91F; color: #06110A;
-          font-size: 19px; font-weight: 800; text-decoration: none; margin-bottom: 18px; }
+          font-size: 19px; font-weight: 800; text-decoration: none; margin-bottom: 14px; }
+  a.btn.alt { background: transparent; color: #61D91F; border: 2px solid #61D91F; font-size: 17px; }
   p { color: #9AA8B2; font-size: 15px; line-height: 1.7; margin: 6px 0; }
 </style>
 </head>
@@ -21,9 +22,10 @@
   <h1>GreenNet Pulse</h1>
   <div class="code" id="code"></div>
   <a class="btn" id="open" href="#">فتح في البرنامج · פתח בתוכנה · Open in the app</a>
-  <p>إن لم يُفتح البرنامج، فهو غير مثبّت على هذا الهاتف. اطلبه من مسؤول الصيانة.</p>
-  <p>אם התוכנה לא נפתחת, היא לא מותקנת בטלפון. בקש אותה מאחראי האחזקה.</p>
-  <p dir="ltr">If the app does not open, it is not installed on this phone. Ask the maintenance manager.</p>
+  <a class="btn alt" id="download" href="/download.html">تنزيل البرنامج · הורדת התוכנה · Download the app</a>
+  <p>إن لم يُفتح البرنامج، فهو غير مثبّت على هذا الهاتف: نزّله من الزر أعلاه.</p>
+  <p>אם התוכנה לא נפתחת, היא לא מותקנת בטלפון: הורד אותה מהכפתור למעלה.</p>
+  <p dir="ltr">If the app does not open, it is not installed on this phone: download it with the button above.</p>
 </div>
 <script>
   // الرابط: /m/GN-0007 → يفتح البرنامج على صفحة الآلة
@@ -31,8 +33,12 @@
   var i = parts.lastIndexOf('m');
   var code = (i >= 0 && parts[i + 1]) ? decodeURIComponent(parts[i + 1]) : '';
   document.getElementById('code').textContent = code;
+  // البرنامج غير مثبّت: بدل متجر Google Play (البرنامج ليس فيه) تُفتح صفحة التنزيل
+  var download = location.origin + '/download.html' + (code ? '?m=' + encodeURIComponent(code) : '');
+  document.getElementById('download').href = download;
   var link = code
-    ? 'intent://m/' + encodeURIComponent(code) + '#Intent;scheme=gnpulse;package=com.greennet.greennet_pulse;end'
+    ? 'intent://m/' + encodeURIComponent(code) + '#Intent;scheme=gnpulse;package=com.greennet.greennet_pulse;'
+      + 'S.browser_fallback_url=' + encodeURIComponent(download) + ';end'
     : 'gnpulse://';
   document.getElementById('open').href = link;
   if (code && /Android/i.test(navigator.userAgent)) { location.href = link; }

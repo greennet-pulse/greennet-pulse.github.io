@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GreenNet Pulse — تنزيل</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+         background: #0B0F12; color: #EAF0F3; font-family: system-ui, "Segoe UI", Tahoma, sans-serif; }
+  .card { width: min(440px, calc(100% - 32px)); text-align: center; padding: 28px 20px; }
+  h1 { font-size: 26px; margin: 0 0 4px; color: #61D91F; }
+  .ver { color: #9AA8B2; font-size: 14px; margin-bottom: 20px; direction: ltr; }
+  a.btn { display: block; padding: 16px; border-radius: 14px; background: #61D91F; color: #06110A;
+          font-size: 18px; font-weight: 800; text-decoration: none; margin-bottom: 12px; }
+  a.btn.alt { background: transparent; color: #61D91F; border: 2px solid #61D91F; font-size: 16px; }
+  a.hidden { display: none; }
+  ol { text-align: start; color: #C9D5DF; font-size: 15px; line-height: 1.8; padding-inline-start: 22px; margin: 8px 0 14px; }
+  p { color: #9AA8B2; font-size: 14px; line-height: 1.7; margin: 6px 0; }
+  .sep { border-top: 1px solid #2A353D; margin: 16px 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>GreenNet Pulse</h1>
+  <div class="ver" id="ver"></div>
+  <a class="btn hidden" id="android" href="#">تنزيل لهواتف أندرويد · הורדה לאנדרואיד · Download for Android</a>
+  <a class="btn alt hidden" id="windows" href="#">تنزيل لويندوز · הורדה ל-Windows · Download for Windows</a>
+  <p id="none" style="display:none">رابط التنزيل غير متاح الآن. اطلب البرنامج من مسؤول الصيانة.<br>
+    קישור ההורדה לא זמין כרגע. בקש את התוכנה מאחראי האחזקה.<br>
+    <span dir="ltr">The download link is not available right now. Ask the maintenance manager.</span></p>
+  <div class="sep"></div>
+  <ol>
+    <li>نزّل الملف، ثم افتحه واضغط «تثبيت». إن طلب الهاتف إذناً بتثبيت التطبيقات، اسمح به.</li>
+    <li>ادخل باسم المستخدم وكلمة السر التي أعطاك إياها مسؤول الصيانة.</li>
+    <li>امسح رمز الآلة مرة أخرى: تُفتح صفحة الآلة في البرنامج مباشرة.</li>
+  </ol>
+  <ol dir="rtl">
+    <li>הורד את הקובץ, פתח אותו ולחץ «התקן». אם הטלפון מבקש הרשאה להתקין אפליקציות, אשר.</li>
+    <li>היכנס עם שם המשתמש והסיסמה שקיבלת מאחראי האחזקה.</li>
+    <li>סרוק שוב את קוד המכונה: דף המכונה ייפתח ישירות בתוכנה.</li>
+  </ol>
+  <ol dir="ltr">
+    <li>Download the file, open it and tap “Install”. If the phone asks for permission to install apps, allow it.</li>
+    <li>Sign in with the username and password from the maintenance manager.</li>
+    <li>Scan the machine code again: the machine page opens directly in the app.</li>
+  </ol>
+</div>
+<script>
+  // روابط التنزيل من إعداد "الإصدارات" في البرنامج (المفتاح العام فقط، كما في البرنامج نفسه)
+  var URL_ = 'https://zoyghbsdpdiiuatevqvp.supabase.co/rest/v1/rpc/public_download_info';
+  var KEY = 'sb_publishable_EDxOj_qR5AYK3Na-0cx2yQ_2hRQEkDK';
+  function show(id, href) {
+    var a = document.getElementById(id);
+    if (href) { a.href = href; a.classList.remove('hidden'); }
+  }
+  fetch(URL_, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: '{}' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      d = d || {};
+      if (d.latest) { document.getElementById('ver').textContent = 'v' + d.latest; }
+      var android = /Android/i.test(navigator.userAgent);
+      show('android', d.android_url);
+      if (!android) { show('windows', d.windows_url); }
+      if (!d.android_url && !d.windows_url) { document.getElementById('none').style.display = 'block'; }
+    })
+    .catch(function () { document.getElementById('none').style.display = 'block'; });
+</script>
+</body>
+</html>
